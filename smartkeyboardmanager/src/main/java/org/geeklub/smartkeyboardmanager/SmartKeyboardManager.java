@@ -59,7 +59,7 @@ public class SmartKeyboardManager {
     mEditText.requestFocus();
     mEditText.setOnTouchListener(new View.OnTouchListener() {
       @Override public boolean onTouch(View v, MotionEvent event) {
-        if (event.getAction() == MotionEvent.ACTION_UP) {
+        if (event.getAction() == MotionEvent.ACTION_UP && mEmotionKeyboard.isShown()) {
           hideFaceTextInputLayout();
         }
         return false;
