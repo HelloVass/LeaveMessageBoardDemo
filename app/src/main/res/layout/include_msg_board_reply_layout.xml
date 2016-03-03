@@ -3,6 +3,7 @@
   android:layout_width="match_parent"
   android:layout_height="match_parent"
   android:background="#eee"
+  android:clickable="true"
   android:orientation="vertical">
 
   <LinearLayout
@@ -22,7 +23,9 @@
       android:layout_marginLeft="8dp"
       android:layout_marginRight="8dp"
       android:layout_weight="1"
-      android:background="@drawable/et_leave_msg_board_input">
+      android:background="@drawable/et_leave_msg_board_input"
+      android:paddingBottom="4dp"
+      android:paddingTop="4dp">
 
       <EditText
         android:id="@+id/et_face_text_emotion"
@@ -40,6 +43,7 @@
         android:layout_width="32dp"
         android:layout_height="32dp"
         android:layout_gravity="center_vertical|end"
+        android:clickable="true"
         android:src="@mipmap/ic_face_text" />
 
     </FrameLayout>
@@ -49,7 +53,6 @@
       android:id="@+id/btn_send_msg"
       android:layout_width="56dp"
       android:layout_height="32dp"
-      android:layout_gravity="center"
       android:layout_marginLeft="4dp"
       android:background="@drawable/btn_leave_msg_board_send"
       android:enabled="false"
