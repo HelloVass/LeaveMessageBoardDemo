@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:card_view="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  android:layout_margin="6dp"
+  card_view:cardCornerRadius="4dp">
+
+  <RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ImageView
+      android:id="@+id/iv_avatar"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_alignParentLeft="true"
+      android:layout_margin="6dp"
+      android:src="@mipmap/ic_launcher" />
+
+    <TextView
+      android:id="@+id/tv_user_name"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_alignBottom="@id/iv_avatar"
+      android:layout_marginBottom="10dp"
+      android:layout_toRightOf="@id/iv_avatar"
+      tools:text="小牙仙" />
+
+    <ImageView
+      android:id="@+id/iv_over_flow_icon"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_alignParentRight="true"
+      android:layout_marginBottom="16dp"
+      android:layout_marginRight="14dp"
+      android:src="@mipmap/ic_launcher"
+      tools:text="2楼" />
+
+
+    <TextView
+      android:id="@+id/tv_floor_num"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_alignBottom="@id/iv_over_flow_icon"
+      android:layout_marginBottom="10dp"
+      android:layout_marginRight="8dp"
+      android:layout_toLeftOf="@id/iv_over_flow_icon"
+      tools:text="2楼" />
+
+    <View
+      android:layout_width="match_parent"
+      android:layout_height="1dp"
+      android:layout_alignBottom="@id/iv_avatar"
+      android:layout_marginLeft="54dp"
+      android:background="@android:color/black" />
+
+
+    <TextView
+      android:id="@+id/tv_leave_msg"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_below="@id/iv_avatar"
+      android:layout_marginBottom="10dp"
+      android:layout_marginLeft="12dp"
+      tools:text="好死不死我把王二的个子设定的太矮了\n谁告诉我该怎么办啊！" />
+
+
+  </RelativeLayout>
+
+</android.support.v7.widget.CardView>

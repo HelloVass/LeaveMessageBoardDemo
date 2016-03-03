@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:background="#eee"
+  android:orientation="vertical">
+
+  <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:paddingBottom="4dp"
+    android:paddingLeft="4dp"
+    android:paddingRight="4dp"
+    android:paddingTop="4dp">
+
+
+    <FrameLayout
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_marginLeft="8dp"
+      android:layout_marginRight="8dp"
+      android:layout_weight="1"
+      android:background="@drawable/et_leave_msg_board_input">
+
+      <EditText
+        android:id="@+id/et_face_text_emotion"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:background="#0000"
+        android:maxLines="3"
+        android:minHeight="36dp"
+        android:textSize="16sp" />
+
+
+      <ImageView
+        android:id="@+id/iv_face_text_emotion"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_gravity="center_vertical|end"
+        android:src="@mipmap/ic_face_text" />
+
+    </FrameLayout>
+
+
+    <Button
+      android:id="@+id/btn_send_msg"
+      android:layout_width="56dp"
+      android:layout_height="32dp"
+      android:layout_gravity="center"
+      android:layout_marginLeft="4dp"
+      android:background="@drawable/btn_leave_msg_board_send"
+      android:enabled="false"
+      android:text="发送"
+      android:textColor="#eee"
+      android:textSize="14sp" />
+
+  </LinearLayout>
+
+
+  <la.juju.android.ftil.widgets.FaceTextInputLayout
+    android:id="@+id/ftil_keyboard"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:visibility="gone" />
+
+
+</LinearLayout>
