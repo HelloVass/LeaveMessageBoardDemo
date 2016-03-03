@@ -24,7 +24,9 @@ dependencies {
   testCompile 'junit:junit:4.12'
   compile 'com.android.support:appcompat-v7:23.2.0'
   compile 'com.android.support:cardview-v7:23.2.0'
+  compile 'com.google.code.gson:gson:2.4'
+  //  HelloVass libraries
   compile 'com.github.HelloVass:HVCommonAdapter:v1.0.3'
   compile 'com.github.HelloVass:FaceTextLayout:v0.3.8'
-  compile 'com.google.code.gson:gson:2.2.4'
+  compile project(':smartkeyboardmanager')
 }

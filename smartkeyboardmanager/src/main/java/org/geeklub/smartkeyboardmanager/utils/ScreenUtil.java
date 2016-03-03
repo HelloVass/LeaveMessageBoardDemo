@@ -1,4 +1,4 @@
-package geeklub.org.messageboarddemo.utils;
+package org.geeklub.smartkeyboardmanager.utils;
 
 import android.content.Context;
 import android.util.DisplayMetrics;
@@ -7,7 +7,6 @@ import android.util.DisplayMetrics;
  * Created by HelloVass on 16/3/3.
  */
 public class ScreenUtil {
-  private static final String TAG = ScreenUtil.class.getSimpleName();
 
   private ScreenUtil() {
 

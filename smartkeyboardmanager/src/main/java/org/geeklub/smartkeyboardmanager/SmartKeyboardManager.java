@@ -1,12 +1,10 @@
-package geeklub.org.messageboarddemo.utils;
+package org.geeklub.smartkeyboardmanager;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
-import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.content.Context;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
@@ -15,34 +13,33 @@ import android.view.animation.AccelerateInterpolator;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import org.geeklub.smartkeyboardmanager.utils.SupportSoftKeyboardUtil;
 
 /**
  * Created by HelloVass on 16/3/2.
  */
-public class FaceTextEmotionKeyboardController {
-
-  private static final String TAG = FaceTextEmotionKeyboardController.class.getSimpleName();
+public class SmartKeyboardManager {
 
   private Activity mActivity;
 
   private View mContentView;
 
-  private View mFaceTextInputLayout;
+  private View mEmotionKeyboard;
 
   private EditText mEditText;
 
-  private View mFaceTextTrigger;
+  private View mEmotionTrigger;
 
   private InputMethodManager mInputMethodManager;
 
   private SupportSoftKeyboardUtil mSupportSoftKeyboardUtil;
 
-  public FaceTextEmotionKeyboardController(Builder builder) {
+  public SmartKeyboardManager(Builder builder) {
     mActivity = builder.mNestedActivity;
     mContentView = builder.mNestedContentView;
-    mFaceTextInputLayout = builder.mNestedFaceTextInputLayout;
+    mEmotionKeyboard = builder.mNestedEmotionKeyboard;
     mEditText = builder.mNestedEditText;
-    mFaceTextTrigger = builder.mNestedFaceTextTrigger;
+    mEmotionTrigger = builder.mNestedEmotionTrigger;
     mInputMethodManager = builder.mNestedInputMethodManager;
     mSupportSoftKeyboardUtil = builder.mNestedSupportSoftKeyboardUtil;
     setUpCallbacks();
@@ -50,7 +47,7 @@ public class FaceTextEmotionKeyboardController {
 
   public boolean interceptBackPressed() {
     // 如果颜文字键盘还在显示，中断 back 操作
-    if (mFaceTextInputLayout.isShown()) {
+    if (mEmotionKeyboard.isShown()) {
       hideFaceTextInputLayout();
       return true;
     }
@@ -58,29 +55,32 @@ public class FaceTextEmotionKeyboardController {
   }
 
   private void setUpCallbacks() {
+    // 设置 EditText 监听器
     mEditText.requestFocus();
     mEditText.setOnTouchListener(new View.OnTouchListener() {
       @Override public boolean onTouch(View v, MotionEvent event) {
-        if (event.getAction() == MotionEvent.ACTION_UP && mFaceTextInputLayout.isShown()) {
-          Log.i(TAG, "mEditText.onTouch()");
+        if (event.getAction() == MotionEvent.ACTION_UP) {
           hideFaceTextInputLayout();
         }
         return false;
       }
     });
 
-    mFaceTextTrigger.setOnClickListener(new View.OnClickListener() {
-      @Override public void onClick(View v) {
-        Log.i(TAG, "mFaceTextTrigger.onClick()");
-        if (mFaceTextInputLayout.isShown()) { // "颜文字键盘"显示
-          hideFaceTextInputLayout();
-        } else { // "颜文字键盘"隐藏
-          if (mSupportSoftKeyboardUtil.isSoftKeyboardShown()) { // "软键盘"显示
-            showFaceTextInputLayout();
-          } else { // "软键盘"隐藏
-            dismissFaceTextInputLayout();
+    // 设置表情切换按钮监听器
+    mEmotionTrigger.setOnTouchListener(new View.OnTouchListener() {
+      @Override public boolean onTouch(View v, MotionEvent event) {
+        if (event.getAction() == MotionEvent.ACTION_UP) {
+          if (mEmotionKeyboard.isShown()) { // "颜文字键盘"显示
+            hideFaceTextInputLayout();
+          } else { // "颜文字键盘"隐藏
+            if (mSupportSoftKeyboardUtil.isSoftKeyboardShown()) { // "软键盘"显示
+              showFaceTextInputLayout();
+            } else { // "软键盘"隐藏
+              displayFaceTextInputLayout();
+            }
           }
         }
+        return false;
       }
     });
   }
@@ -90,26 +90,20 @@ public class FaceTextEmotionKeyboardController {
    */
   private void showFaceTextInputLayout() {
 
-    mFaceTextInputLayout.setVisibility(View.VISIBLE);
+    mEmotionKeyboard.setVisibility(View.VISIBLE);
+    mEmotionKeyboard.getLayoutParams().height =
+        mSupportSoftKeyboardUtil.getSupportSoftKeyboardHeight();
 
-    ObjectAnimator showAnimator = ObjectAnimator.ofFloat(mFaceTextInputLayout, "alpha", 0.0F, 1.0F);
-    showAnimator.setDuration(300);
+    ObjectAnimator showAnimator = ObjectAnimator.ofFloat(mEmotionKeyboard, "alpha", 0.0F, 1.0F);
+    showAnimator.setDuration(200L);
     showAnimator.setInterpolator(new AccelerateDecelerateInterpolator());
-    showAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-      @Override public void onAnimationUpdate(ValueAnimator animation) {
-        mFaceTextInputLayout.getLayoutParams().height =
-            mSupportSoftKeyboardUtil.getSupportSoftKeyboardHeight();
-      }
-    });
     showAnimator.addListener(new AnimatorListenerAdapter() {
       @Override public void onAnimationStart(Animator animation) {
-        super.onAnimationStart(animation);
         lockContentViewHeight();
         hideSoftKeyboard();
       }
 
       @Override public void onAnimationEnd(Animator animation) {
-        super.onAnimationEnd(animation);
         unlockContentViewHeight();
       }
     });
@@ -120,8 +114,8 @@ public class FaceTextEmotionKeyboardController {
    * 隐藏颜文字键盘
    */
   private void hideFaceTextInputLayout() {
-    ObjectAnimator hideAnimator = ObjectAnimator.ofFloat(mFaceTextInputLayout, "alpha", 1.0F, 0.0F);
-    hideAnimator.setDuration(300);
+    ObjectAnimator hideAnimator = ObjectAnimator.ofFloat(mEmotionKeyboard, "alpha", 1.0F, 0.0F);
+    hideAnimator.setDuration(200L);
     hideAnimator.setInterpolator(new AccelerateInterpolator());
     hideAnimator.addListener(new AnimatorListenerAdapter() {
       @Override public void onAnimationStart(Animator animation) {
@@ -130,7 +124,7 @@ public class FaceTextEmotionKeyboardController {
       }
 
       @Override public void onAnimationEnd(Animator animation) {
-        mFaceTextInputLayout.setVisibility(View.GONE);
+        mEmotionKeyboard.setVisibility(View.GONE);
         unlockContentViewHeight();
       }
     });
@@ -138,23 +132,22 @@ public class FaceTextEmotionKeyboardController {
   }
 
   /**
-   * 隐藏颜文字键盘
+   * 显示颜文字键盘(不锁定“ContentView”的高度)
    */
-  private void dismissFaceTextInputLayout() {
-    ObjectAnimator dismissAnimator =
-        ObjectAnimator.ofFloat(mFaceTextInputLayout, "alpha", 1.0F, 0.0F);
-    dismissAnimator.setDuration(300);
-    dismissAnimator.setInterpolator(new AccelerateInterpolator());
-    dismissAnimator.addListener(new AnimatorListenerAdapter() {
-      @Override public void onAnimationStart(Animator animation) {
-        showSoftKeyboard();
-      }
+  private void displayFaceTextInputLayout() {
+    mEmotionKeyboard.setVisibility(View.VISIBLE);
+    mEmotionKeyboard.getLayoutParams().height =
+        mSupportSoftKeyboardUtil.getSupportSoftKeyboardHeight();
 
-      @Override public void onAnimationEnd(Animator animation) {
-        mFaceTextInputLayout.setVisibility(View.GONE);
+    ObjectAnimator showAnimator = ObjectAnimator.ofFloat(mEmotionKeyboard, "alpha", 0.0F, 1.0F);
+    showAnimator.setDuration(200L);
+    showAnimator.setInterpolator(new AccelerateDecelerateInterpolator());
+    showAnimator.addListener(new AnimatorListenerAdapter() {
+      @Override public void onAnimationStart(Animator animation) {
+        hideSoftKeyboard();
       }
     });
-    dismissAnimator.start();
+    showAnimator.start();
   }
 
   /**
@@ -195,11 +188,11 @@ public class FaceTextEmotionKeyboardController {
 
     private View mNestedContentView;
 
-    private View mNestedFaceTextInputLayout;
+    private View mNestedEmotionKeyboard;
 
     private EditText mNestedEditText;
 
-    private View mNestedFaceTextTrigger;
+    private View mNestedEmotionTrigger;
 
     private InputMethodManager mNestedInputMethodManager;
 
@@ -215,7 +208,7 @@ public class FaceTextEmotionKeyboardController {
     }
 
     public Builder setFaceTextInputLayout(View inputLayout) {
-      this.mNestedFaceTextInputLayout = inputLayout;
+      this.mNestedEmotionKeyboard = inputLayout;
       return this;
     }
 
@@ -225,13 +218,13 @@ public class FaceTextEmotionKeyboardController {
     }
 
     public Builder setFaceTextEmotionTrigger(View trigger) {
-      this.mNestedFaceTextTrigger = trigger;
+      this.mNestedEmotionTrigger = trigger;
       return this;
     }
 
-    public FaceTextEmotionKeyboardController create() {
+    public SmartKeyboardManager create() {
       initFieldsWithDefaultValue();
-      return new FaceTextEmotionKeyboardController(this);
+      return new SmartKeyboardManager(this);
     }
 
     private void initFieldsWithDefaultValue() {

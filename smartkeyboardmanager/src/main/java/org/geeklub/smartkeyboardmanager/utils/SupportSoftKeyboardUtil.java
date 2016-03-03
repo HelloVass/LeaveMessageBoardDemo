@@ -1,4 +1,4 @@
-package geeklub.org.messageboarddemo.utils;
+package org.geeklub.smartkeyboardmanager.utils;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
@@ -21,7 +21,7 @@ public class SupportSoftKeyboardUtil {
 
   private static final String KEY_PREF_SOFT_KEYBOARD_HEIGHT = "key_pref_soft_keyboard_height";
 
-  // 颜文字键盘默认高度 240dp
+  // “表情键盘”默认高度 240dp
   private static final int DEFAULT_SOFT_KEYBOARD_HEIGHT = 240;
 
   private Activity mActivity;
@@ -43,7 +43,7 @@ public class SupportSoftKeyboardUtil {
     return mSupportSoftKeyboardUtil;
   }
 
-  // 得到用户软键盘高度
+  // 得到“软键盘”高度
   public int getSupportSoftKeyboardHeight() {
 
     int softKeyboardHeight = getCurrentSoftInputHeight();
@@ -55,7 +55,7 @@ public class SupportSoftKeyboardUtil {
           .apply();
     }
 
-    // 如果当前键盘高度等于零，可能是被隐藏了，也可能是我的锅，那就使用之前的键盘高度或者默认键盘高度
+    // 如果当前“软键盘”高度等于零，可能是被隐藏了，也可能是我的锅，那就使用本地已经保存键盘高度
     if (softKeyboardHeight == 0) {
       softKeyboardHeight = mSoftKeyboardSharedPreferences.getInt(KEY_PREF_SOFT_KEYBOARD_HEIGHT,
           DensityUtil.dip2px(mActivity, DEFAULT_SOFT_KEYBOARD_HEIGHT));
@@ -64,7 +64,7 @@ public class SupportSoftKeyboardUtil {
     return softKeyboardHeight;
   }
 
-  // 用户的软键盘是否显示
+  // 软键盘是否显示
   public boolean isSoftKeyboardShown() {
     return getCurrentSoftInputHeight() != 0;
   }

@@ -1,4 +1,4 @@
-package geeklub.org.messageboarddemo.utils;
+package geeklub.org.messageboarddemo.source;
 
 import android.content.Context;
 import com.google.gson.Gson;

@@ -1,4 +1,4 @@
-package geeklub.org.messageboarddemo.utils;
+package org.geeklub.smartkeyboardmanager.utils;
 
 import android.content.Context;
 
@@ -6,8 +6,6 @@ import android.content.Context;
  * Created by HelloVass on 16/1/15.
  */
 public class DensityUtil {
-
-  private static final String TAG = DensityUtil.class.getSimpleName();
 
   public static int px2dip(Context context, float px) {
     float scale = context.getResources().getDisplayMetrics().density;

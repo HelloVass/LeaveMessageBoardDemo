@@ -11,11 +11,11 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import geeklub.org.messageboarddemo.adapter.MessageBoardAdapter;
 import geeklub.org.messageboarddemo.entities.LeaveMessage;
-import geeklub.org.messageboarddemo.utils.FaceTextEmotionKeyboardController;
-import geeklub.org.messageboarddemo.utils.RawSource;
+import geeklub.org.messageboarddemo.source.RawSource;
 import java.util.ArrayList;
 import java.util.List;
 import la.juju.android.ftil.widgets.FaceTextInputLayout;
+import org.geeklub.smartkeyboardmanager.SmartKeyboardManager;
 
 public class MainActivity extends AppCompatActivity
     implements MessageBoardAdapter.OnMessageBoardActionListener {
@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity
 
   private MessageBoardAdapter mMessageBoardAdapter;
 
-  private FaceTextEmotionKeyboardController mFaceTextEmotionKeyboardController;
+  private SmartKeyboardManager mSmartKeyboardManager;
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -70,12 +70,11 @@ public class MainActivity extends AppCompatActivity
     // 设置颜文字
     mFaceTextInputLayout.setFaceTextSource(new RawSource(this, R.raw.face_text));
 
-    mFaceTextEmotionKeyboardController =
-        new FaceTextEmotionKeyboardController.Builder(this).setContentView(mRecyclerView)
-            .setFaceTextInputLayout(mFaceTextInputLayout)
-            .setEditText(mFaceTextEmotionEditText)
-            .setFaceTextEmotionTrigger(mFaceTextEmotionTrigger)
-            .create();
+    mSmartKeyboardManager = new SmartKeyboardManager.Builder(this).setContentView(mRecyclerView)
+        .setFaceTextInputLayout(mFaceTextInputLayout)
+        .setEditText(mFaceTextEmotionEditText)
+        .setFaceTextEmotionTrigger(mFaceTextEmotionTrigger)
+        .create();
   }
 
   private void getDummyDataSource() {
@@ -99,7 +98,7 @@ public class MainActivity extends AppCompatActivity
   }
 
   @Override public void onBackPressed() {
-    if (!mFaceTextEmotionKeyboardController.interceptBackPressed()) {
+    if (!mSmartKeyboardManager.interceptBackPressed()) {
       super.onBackPressed();
     }
   }
