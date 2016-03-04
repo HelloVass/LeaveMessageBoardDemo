@@ -71,7 +71,7 @@ public class MainActivity extends AppCompatActivity
     mFaceTextInputLayout.setFaceTextSource(new RawSource(this, R.raw.face_text));
 
     mSmartKeyboardManager = new SmartKeyboardManager.Builder(this).setContentView(mRecyclerView)
-        .setFaceTextInputLayout(mFaceTextInputLayout)
+        .setEmotionKeyboard(mFaceTextInputLayout)
         .setEditText(mFaceTextEmotionEditText)
         .setFaceTextEmotionTrigger(mFaceTextEmotionTrigger)
         .create();

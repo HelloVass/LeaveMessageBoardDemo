@@ -45,22 +45,13 @@ public class SmartKeyboardManager {
     setUpCallbacks();
   }
 
-  public boolean interceptBackPressed() {
-    // 如果颜文字键盘还在显示，中断 back 操作
-    if (mEmotionKeyboard.isShown()) {
-      dismissFaceTextInputLayout();
-      return true;
-    }
-    return false;
-  }
-
   private void setUpCallbacks() {
     // 设置 EditText 监听器
     mEditText.requestFocus();
     mEditText.setOnTouchListener(new View.OnTouchListener() {
       @Override public boolean onTouch(View v, MotionEvent event) {
         if (event.getAction() == MotionEvent.ACTION_UP && mEmotionKeyboard.isShown()) {
-          hideFaceTextInputLayout();
+          hideEmotionKeyboardByLockContentViewHeight();
         }
         return false;
       }
@@ -71,12 +62,12 @@ public class SmartKeyboardManager {
       @Override public boolean onTouch(View v, MotionEvent event) {
         if (event.getAction() == MotionEvent.ACTION_UP) {
           if (mEmotionKeyboard.isShown()) { // "颜文字键盘"显示
-            hideFaceTextInputLayout();
+            hideEmotionKeyboardByLockContentViewHeight();
           } else { // "颜文字键盘"隐藏
             if (mSupportSoftKeyboardUtil.isSoftKeyboardShown()) { // "软键盘"显示
-              showFaceTextInputLayout();
+              showEmotionKeyboardByLockContentViewHeight();
             } else { // "软键盘"隐藏
-              displayFaceTextInputLayout();
+              showEmotionKeyboardWithoutLockContentViewHeight();
             }
           }
         }
@@ -85,10 +76,19 @@ public class SmartKeyboardManager {
     });
   }
 
+  public boolean interceptBackPressed() {
+    // 如果颜文字键盘还在显示，中断"back"操作
+    if (mEmotionKeyboard.isShown()) {
+      hideEmotionKeyboardWithoutSoftKeyboard();
+      return true;
+    }
+    return false;
+  }
+
   /**
-   * 显示颜文字键盘
+   * 显示“颜文字键盘”，隐藏软键盘(锁定“ContentView”的高度)
    */
-  private void showFaceTextInputLayout() {
+  private void showEmotionKeyboardByLockContentViewHeight() {
 
     mEmotionKeyboard.setVisibility(View.VISIBLE);
     mEmotionKeyboard.getLayoutParams().height =
@@ -111,9 +111,9 @@ public class SmartKeyboardManager {
   }
 
   /**
-   * 隐藏颜文字键盘
+   * 隐藏“颜文字键盘”，显示“软键盘”（锁定“ContentView”的高度）
    */
-  private void hideFaceTextInputLayout() {
+  private void hideEmotionKeyboardByLockContentViewHeight() {
     ObjectAnimator hideAnimator = ObjectAnimator.ofFloat(mEmotionKeyboard, "alpha", 1.0F, 0.0F);
     hideAnimator.setDuration(200L);
     hideAnimator.setInterpolator(new AccelerateInterpolator());
@@ -132,9 +132,9 @@ public class SmartKeyboardManager {
   }
 
   /**
-   * 显示颜文字键盘(不锁定“ContentView”的高度)
+   * 显示“颜文字键盘”，隐藏“软键盘”(不锁定“ContentView”的高度)
    */
-  private void displayFaceTextInputLayout() {
+  private void showEmotionKeyboardWithoutLockContentViewHeight() {
     mEmotionKeyboard.setVisibility(View.VISIBLE);
     mEmotionKeyboard.getLayoutParams().height =
         mSupportSoftKeyboardUtil.getSupportSoftKeyboardHeight();
@@ -151,9 +151,9 @@ public class SmartKeyboardManager {
   }
 
   /**
-   * 隐藏"颜文字键盘"同时隐藏“软键盘”
+   * 隐藏"颜文字键盘"，不显示“软键盘”
    */
-  private void dismissFaceTextInputLayout() {
+  private void hideEmotionKeyboardWithoutSoftKeyboard() {
     ObjectAnimator hideAnimator = ObjectAnimator.ofFloat(mEmotionKeyboard, "alpha", 1.0F, 0.0F);
     hideAnimator.setDuration(200L);
     hideAnimator.setInterpolator(new AccelerateInterpolator());
@@ -227,8 +227,8 @@ public class SmartKeyboardManager {
       return this;
     }
 
-    public Builder setFaceTextInputLayout(View inputLayout) {
-      this.mNestedEmotionKeyboard = inputLayout;
+    public Builder setEmotionKeyboard(View emotionKeyboard) {
+      this.mNestedEmotionKeyboard = emotionKeyboard;
       return this;
     }
 
