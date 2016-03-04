@@ -48,7 +48,7 @@ public class SmartKeyboardManager {
   public boolean interceptBackPressed() {
     // 如果颜文字键盘还在显示，中断 back 操作
     if (mEmotionKeyboard.isShown()) {
-      hideFaceTextInputLayout();
+      dismissFaceTextInputLayout();
       return true;
     }
     return false;
@@ -148,6 +148,26 @@ public class SmartKeyboardManager {
       }
     });
     showAnimator.start();
+  }
+
+  /**
+   * 隐藏"颜文字键盘"同时隐藏“软键盘”
+   */
+  private void dismissFaceTextInputLayout() {
+    ObjectAnimator hideAnimator = ObjectAnimator.ofFloat(mEmotionKeyboard, "alpha", 1.0F, 0.0F);
+    hideAnimator.setDuration(200L);
+    hideAnimator.setInterpolator(new AccelerateInterpolator());
+    hideAnimator.addListener(new AnimatorListenerAdapter() {
+      @Override public void onAnimationStart(Animator animation) {
+        lockContentViewHeight();
+      }
+
+      @Override public void onAnimationEnd(Animator animation) {
+        mEmotionKeyboard.setVisibility(View.GONE);
+        unlockContentViewHeight();
+      }
+    });
+    hideAnimator.start();
   }
 
   /**
