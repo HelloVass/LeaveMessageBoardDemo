@@ -23,7 +23,7 @@
 
 ### Step 1. Add the JitPack repository to your build file
 
-```
+```groovy
 allprojects {
 		repositories {
 			...
@@ -34,7 +34,7 @@ allprojects {
 
 ### Step 2. Add the dependency
 
-```
+```groovy
 dependencies {
 		compile 'com.github.User:Repo:Tag'
 	}
@@ -52,6 +52,7 @@ dependencies {
 ```
 
 2.自定义**表情键盘**部分
+
 ```xml
     <include
       android:id="@+id/reply_layout"
@@ -61,6 +62,7 @@ dependencies {
 ```
 
 3.使用 `SmartKeyboardManager`
+
 ```java
 mSmartKeyboardManager = new SmartKeyboardManager.Builder(this).setContentView(mRecyclerView)
         .setEmotionKeyboard(mFaceTextInputLayout) // 表情键盘View
@@ -72,6 +74,7 @@ mSmartKeyboardManager = new SmartKeyboardManager.Builder(this).setContentView(mR
 ## Tips
 
 重写 Activity 的 onBackPressed 方法，使用 mSmartKeyboardManager.interceptBackPressed() 方法判断是否**拦截**返回键操作！
+
 ```java
  @Override public void onBackPressed() {
     if (!mSmartKeyboardManager.interceptBackPressed()) {
