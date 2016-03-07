@@ -57,6 +57,7 @@ public class SmartKeyboardManager {
       }
     });
 
+    // 为“颜文字表情键盘“切换按钮设置监听器
     mEmotionTrigger.setOnTouchListener(new ThrottleTouchListener() {
       @Override public void onThrottleTouch() {
         if (mEmotionKeyboard.isShown()) { // "颜文字键盘"显示

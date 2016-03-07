@@ -5,6 +5,7 @@ import android.view.View;
 
 /**
  * Created by HelloVass on 16/3/7.
+ * 过滤一定时间内的重复点击事件
  */
 public abstract class ThrottleTouchListener implements View.OnTouchListener {
 
@@ -26,5 +27,8 @@ public abstract class ThrottleTouchListener implements View.OnTouchListener {
     return false;
   }
 
+  /**
+   * 过滤了快速点击的方法回调
+   */
   public abstract void onThrottleTouch();
 }
