@@ -5,7 +5,6 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.content.Context;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.AccelerateDecelerateInterpolator;
@@ -19,6 +18,8 @@ import org.geeklub.smartkeyboardmanager.utils.SupportSoftKeyboardUtil;
  * Created by HelloVass on 16/3/2.
  */
 public class SmartKeyboardManager {
+
+  private final static long DURATION_SWITCH_EMOTION_KEYBOARD = 150L;
 
   private Activity mActivity;
 
@@ -48,30 +49,25 @@ public class SmartKeyboardManager {
   private void setUpCallbacks() {
     // 设置 EditText 监听器
     mEditText.requestFocus();
-    mEditText.setOnTouchListener(new View.OnTouchListener() {
-      @Override public boolean onTouch(View v, MotionEvent event) {
-        if (event.getAction() == MotionEvent.ACTION_UP && mEmotionKeyboard.isShown()) {
+    mEditText.setOnTouchListener(new ThrottleTouchListener() {
+      @Override public void onThrottleTouch() {
+        if (mEmotionKeyboard.isShown()) {
           hideEmotionKeyboardByLockContentViewHeight();
         }
-        return false;
       }
     });
 
-    // 设置表情切换按钮监听器
-    mEmotionTrigger.setOnTouchListener(new View.OnTouchListener() {
-      @Override public boolean onTouch(View v, MotionEvent event) {
-        if (event.getAction() == MotionEvent.ACTION_UP) {
-          if (mEmotionKeyboard.isShown()) { // "颜文字键盘"显示
-            hideEmotionKeyboardByLockContentViewHeight();
-          } else { // "颜文字键盘"隐藏
-            if (mSupportSoftKeyboardUtil.isSoftKeyboardShown()) { // "软键盘"显示
-              showEmotionKeyboardByLockContentViewHeight();
-            } else { // "软键盘"隐藏
-              showEmotionKeyboardWithoutLockContentViewHeight();
-            }
+    mEmotionTrigger.setOnTouchListener(new ThrottleTouchListener() {
+      @Override public void onThrottleTouch() {
+        if (mEmotionKeyboard.isShown()) { // "颜文字键盘"显示
+          hideEmotionKeyboardByLockContentViewHeight();
+        } else { // "颜文字键盘"隐藏
+          if (mSupportSoftKeyboardUtil.isSoftKeyboardShown()) { // "软键盘"显示
+            showEmotionKeyboardByLockContentViewHeight();
+          } else { // "软键盘"隐藏
+            showEmotionKeyboardWithoutLockContentViewHeight();
           }
         }
-        return false;
       }
     });
   }
@@ -95,7 +91,7 @@ public class SmartKeyboardManager {
         mSupportSoftKeyboardUtil.getSupportSoftKeyboardHeight();
 
     ObjectAnimator showAnimator = ObjectAnimator.ofFloat(mEmotionKeyboard, "alpha", 0.0F, 1.0F);
-    showAnimator.setDuration(200L);
+    showAnimator.setDuration(DURATION_SWITCH_EMOTION_KEYBOARD);
     showAnimator.setInterpolator(new AccelerateDecelerateInterpolator());
     showAnimator.addListener(new AnimatorListenerAdapter() {
       @Override public void onAnimationStart(Animator animation) {
@@ -115,7 +111,7 @@ public class SmartKeyboardManager {
    */
   private void hideEmotionKeyboardByLockContentViewHeight() {
     ObjectAnimator hideAnimator = ObjectAnimator.ofFloat(mEmotionKeyboard, "alpha", 1.0F, 0.0F);
-    hideAnimator.setDuration(200L);
+    hideAnimator.setDuration(DURATION_SWITCH_EMOTION_KEYBOARD);
     hideAnimator.setInterpolator(new AccelerateInterpolator());
     hideAnimator.addListener(new AnimatorListenerAdapter() {
       @Override public void onAnimationStart(Animator animation) {
@@ -140,7 +136,7 @@ public class SmartKeyboardManager {
         mSupportSoftKeyboardUtil.getSupportSoftKeyboardHeight();
 
     ObjectAnimator showAnimator = ObjectAnimator.ofFloat(mEmotionKeyboard, "alpha", 0.0F, 1.0F);
-    showAnimator.setDuration(200L);
+    showAnimator.setDuration(DURATION_SWITCH_EMOTION_KEYBOARD);
     showAnimator.setInterpolator(new AccelerateDecelerateInterpolator());
     showAnimator.addListener(new AnimatorListenerAdapter() {
       @Override public void onAnimationStart(Animator animation) {
@@ -155,7 +151,7 @@ public class SmartKeyboardManager {
    */
   private void hideEmotionKeyboardWithoutSoftKeyboard() {
     ObjectAnimator hideAnimator = ObjectAnimator.ofFloat(mEmotionKeyboard, "alpha", 1.0F, 0.0F);
-    hideAnimator.setDuration(200L);
+    hideAnimator.setDuration(DURATION_SWITCH_EMOTION_KEYBOARD);
     hideAnimator.setInterpolator(new AccelerateInterpolator());
     hideAnimator.addListener(new AnimatorListenerAdapter() {
       @Override public void onAnimationStart(Animator animation) {
