@@ -1,5 +1,6 @@
 # SmartKeyboardManager
 
+[![](https://jitpack.io/v/HelloVass/LeaveMessageBoardDemo.svg)](https://jitpack.io/#HelloVass/LeaveMessageBoardDemo)
 ## 优雅地切换表情键盘和软键盘
 
 > Thanks for [Android: 实现表情输入键盘的另外一种思路](http://www.dss886.com/android/2015/12/16/14-01/) 这篇文章！
@@ -12,7 +13,7 @@
 
 2. 加入 Alpha 属性动画改进**切换键盘**时候的用户体验
 
-3. **过滤快速点击事件**防止 View 出现奇怪的行为
+3. **过滤快速点击事件**，机智如我
 
 
 ## 效果
