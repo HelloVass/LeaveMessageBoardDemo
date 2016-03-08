@@ -155,13 +155,8 @@ public class SmartKeyboardManager {
     hideAnimator.setDuration(DURATION_SWITCH_EMOTION_KEYBOARD);
     hideAnimator.setInterpolator(new AccelerateInterpolator());
     hideAnimator.addListener(new AnimatorListenerAdapter() {
-      @Override public void onAnimationStart(Animator animation) {
-        lockContentViewHeight();
-      }
-
       @Override public void onAnimationEnd(Animator animation) {
         mEmotionKeyboard.setVisibility(View.GONE);
-        unlockContentViewHeight();
       }
     });
     hideAnimator.start();
