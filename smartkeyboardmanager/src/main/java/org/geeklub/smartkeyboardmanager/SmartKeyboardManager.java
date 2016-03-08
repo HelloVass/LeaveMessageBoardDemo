@@ -247,7 +247,7 @@ public class SmartKeyboardManager {
     private void initFieldsWithDefaultValue() {
       this.mNestedInputMethodManager =
           (InputMethodManager) mNestedActivity.getSystemService(Context.INPUT_METHOD_SERVICE);
-      this.mNestedSupportSoftKeyboardUtil = SupportSoftKeyboardUtil.getInstance(mNestedActivity);
+      this.mNestedSupportSoftKeyboardUtil = new SupportSoftKeyboardUtil(mNestedActivity);
       mNestedActivity.getWindow()
           .setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN
               | WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);

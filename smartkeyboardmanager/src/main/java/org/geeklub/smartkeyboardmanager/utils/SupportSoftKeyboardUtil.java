@@ -28,19 +28,10 @@ public class SupportSoftKeyboardUtil {
 
   private SharedPreferences mSoftKeyboardSharedPreferences;
 
-  private static SupportSoftKeyboardUtil mSupportSoftKeyboardUtil;
-
-  private SupportSoftKeyboardUtil(Activity activity) {
+  public SupportSoftKeyboardUtil(Activity activity) {
     mActivity = activity;
     mSoftKeyboardSharedPreferences =
         activity.getSharedPreferences(NAME_PREF_SOFT_KEYBOARD, Context.MODE_PRIVATE);
-  }
-
-  public static SupportSoftKeyboardUtil getInstance(Activity activity) {
-    if (mSupportSoftKeyboardUtil == null) {
-      mSupportSoftKeyboardUtil = new SupportSoftKeyboardUtil(activity);
-    }
-    return mSupportSoftKeyboardUtil;
   }
 
   // 得到“软键盘”高度
