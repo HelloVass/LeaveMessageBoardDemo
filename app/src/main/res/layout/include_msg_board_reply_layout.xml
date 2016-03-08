@@ -43,8 +43,10 @@
         android:layout_width="32dp"
         android:layout_height="32dp"
         android:layout_gravity="center_vertical|end"
+        android:background="@drawable/iv_trigger_emotion_keyboard"
         android:clickable="true"
-        android:src="@mipmap/ic_face_text" />
+        android:contentDescription="@null"
+        android:src="@mipmap/ic_trigger_emotion_keyboard" />
 
     </FrameLayout>
 

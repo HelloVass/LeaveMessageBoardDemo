@@ -41,7 +41,7 @@ public class FaceTextEditText extends EditText implements View.OnTouchListener {
     mFaceTextIcon = getCompoundDrawables()[2];
 
     if (mFaceTextIcon == null) {
-      mFaceTextIcon = ContextCompat.getDrawable(context, R.mipmap.ic_face_text);
+      mFaceTextIcon = ContextCompat.getDrawable(context, R.mipmap.ic_trigger_emotion_keyboard);
     }
 
     Drawable wrappedFaceTextIcon = DrawableCompat.wrap(mFaceTextIcon);
