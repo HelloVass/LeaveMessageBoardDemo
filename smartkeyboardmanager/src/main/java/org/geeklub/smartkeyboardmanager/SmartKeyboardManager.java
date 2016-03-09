@@ -229,7 +229,7 @@ public class SmartKeyboardManager {
       return this;
     }
 
-    public Builder setFaceTextEmotionTrigger(View trigger) {
+    public Builder setEmotionTrigger(View trigger) {
       this.mNestedEmotionTrigger = trigger;
       return this;
     }

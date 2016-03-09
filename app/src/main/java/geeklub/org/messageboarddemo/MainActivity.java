@@ -73,7 +73,7 @@ public class MainActivity extends AppCompatActivity
     mSmartKeyboardManager = new SmartKeyboardManager.Builder(this).setContentView(mRecyclerView)
         .setEmotionKeyboard(mFaceTextInputLayout)
         .setEditText(mFaceTextEmotionEditText)
-        .setFaceTextEmotionTrigger(mFaceTextEmotionTrigger)
+        .setEmotionTrigger(mFaceTextEmotionTrigger)
         .create();
   }
 
