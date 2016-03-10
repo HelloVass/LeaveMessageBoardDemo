@@ -76,7 +76,7 @@ public class MainActivity extends AppCompatActivity
         .setEmotionTrigger(mFaceTextEmotionTrigger)
         .addOnContentViewScrollListener(new SmartKeyboardManager.OnContentViewScrollListener() {
           @Override public void shouldScroll(int distance) {
-            mRecyclerView.smoothScrollBy(0, distance);
+            mRecyclerView.scrollBy(0, distance);
           }
         })
         .create();
