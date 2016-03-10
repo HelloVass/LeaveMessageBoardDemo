@@ -15,6 +15,8 @@
 
 3. **过滤快速点击事件**，机智如我
 
+4. 增加 `OnContentViewScrollListener`,在键盘弹出或隐藏时，优雅地滚动你的 `ContentView`
+
 
 ## 效果
 ![优雅地切换表情键盘](./design/优雅地切换表情键盘.gif)
@@ -71,6 +73,10 @@ mSmartKeyboardManager = new SmartKeyboardManager.Builder(this).setContentView(mR
         .setEmotionKeyboard(mFaceTextInputLayout) // 表情键盘View
         .setEditText(mFaceTextEmotionEditText) // 输入框
         .setFaceTextEmotionTrigger(mFaceTextEmotionTrigger) // 表情键盘和软键盘的切换按钮
+        .addOnContentViewScrollListener(new SmartKeyboardManager.OnContentViewScrollListener() {
+          @Override public void shouldScroll(int distance) {
+            mRecyclerView.scrollBy(0, distance); // 将 recyclerview 滚动相应的距离，内部已经把滚动的方向问题处理好了，大胆使用吧
+          }
         .create();
 ```
 
