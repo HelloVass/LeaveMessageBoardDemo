@@ -5,6 +5,7 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.content.Context;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.AccelerateDecelerateInterpolator;
@@ -18,6 +19,8 @@ import org.geeklub.smartkeyboardmanager.utils.SupportSoftKeyboardUtil;
  * Created by HelloVass on 16/3/2.
  */
 public class SmartKeyboardManager {
+
+  private static final String TAG = SmartKeyboardManager.class.getSimpleName();
 
   private final static long DURATION_SWITCH_EMOTION_KEYBOARD = 150L;
 
@@ -35,6 +38,8 @@ public class SmartKeyboardManager {
 
   private SupportSoftKeyboardUtil mSupportSoftKeyboardUtil;
 
+  private OnContentViewScrollListener mOnContentViewScrollListener;
+
   public SmartKeyboardManager(Builder builder) {
     mActivity = builder.mNestedActivity;
     mContentView = builder.mNestedContentView;
@@ -43,6 +48,7 @@ public class SmartKeyboardManager {
     mEmotionTrigger = builder.mNestedEmotionTrigger;
     mInputMethodManager = builder.mNestedInputMethodManager;
     mSupportSoftKeyboardUtil = builder.mNestedSupportSoftKeyboardUtil;
+    mOnContentViewScrollListener = builder.mOnNestednContentViewScrollListener;
     setUpCallbacks();
   }
 
@@ -53,6 +59,25 @@ public class SmartKeyboardManager {
       @Override public void onThrottleTouch() {
         if (mEmotionKeyboard.isShown()) {
           hideEmotionKeyboardByLockContentViewHeight();
+        }
+      }
+    });
+
+    // 设置内容滚动监听器
+    mContentView.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
+      @Override
+      public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft,
+          int oldTop, int oldRight, int oldBottom) {
+
+        if (oldBottom - bottom == 0) {
+          Log.i(TAG, "不用滚动");
+          return;
+        }
+
+        Log.i(TAG, "滚动距离 -->>>" + (oldBottom - bottom));
+
+        if (mOnContentViewScrollListener != null) {
+          mOnContentViewScrollListener.shouldScroll(oldBottom - bottom);
         }
       }
     });
@@ -210,6 +235,8 @@ public class SmartKeyboardManager {
 
     private SupportSoftKeyboardUtil mNestedSupportSoftKeyboardUtil;
 
+    private OnContentViewScrollListener mOnNestednContentViewScrollListener;
+
     public Builder(Activity activity) {
       this.mNestedActivity = activity;
     }
@@ -234,6 +261,11 @@ public class SmartKeyboardManager {
       return this;
     }
 
+    public Builder addOnContentViewScrollListener(OnContentViewScrollListener listener) {
+      this.mOnNestednContentViewScrollListener = listener;
+      return this;
+    }
+
     public SmartKeyboardManager create() {
       initFieldsWithDefaultValue();
       return new SmartKeyboardManager(this);
@@ -247,5 +279,9 @@ public class SmartKeyboardManager {
           .setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN
               | WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
     }
+  }
+
+  public interface OnContentViewScrollListener {
+    void shouldScroll(int distance);
   }
 }

@@ -74,6 +74,11 @@ public class MainActivity extends AppCompatActivity
         .setEmotionKeyboard(mFaceTextInputLayout)
         .setEditText(mFaceTextEmotionEditText)
         .setEmotionTrigger(mFaceTextEmotionTrigger)
+        .addOnContentViewScrollListener(new SmartKeyboardManager.OnContentViewScrollListener() {
+          @Override public void shouldScroll(int distance) {
+            mRecyclerView.smoothScrollBy(0, distance);
+          }
+        })
         .create();
   }
 
