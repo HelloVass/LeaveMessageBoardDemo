@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity
     getSupportActionBar().setDisplayShowTitleEnabled(false);
     mToolbar.setNavigationIcon(R.mipmap.ic_launcher);
 
-    // 设置 Recyclerview
+    // 设置 RecyclerView
     mRecyclerView.setItemAnimator(new DefaultItemAnimator());
     mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
     mRecyclerView.setAdapter(mMessageBoardAdapter);

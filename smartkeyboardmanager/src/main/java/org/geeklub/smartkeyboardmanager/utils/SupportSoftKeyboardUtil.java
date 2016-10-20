@@ -24,40 +24,36 @@ public class SupportSoftKeyboardUtil {
   // “表情键盘”默认高度 240dp
   private static final int DEFAULT_SOFT_KEYBOARD_HEIGHT = 240;
 
-  private Activity mActivity;
-
-  private SharedPreferences mSoftKeyboardSharedPreferences;
-
-  public SupportSoftKeyboardUtil(Activity activity) {
-    mActivity = activity;
-    mSoftKeyboardSharedPreferences =
-        activity.getSharedPreferences(NAME_PREF_SOFT_KEYBOARD, Context.MODE_PRIVATE);
+  public SupportSoftKeyboardUtil() {
+    //  构造函数私有化
   }
 
   // 得到“软键盘”高度
-  public int getSupportSoftKeyboardHeight() {
+  public static int getSupportSoftKeyboardHeight(Activity activity) {
 
-    int softKeyboardHeight = getCurrentSoftInputHeight();
+    int softKeyboardHeight = getCurrentSoftInputHeight(activity);
 
     // 如果当前的键盘高度大于零，赶紧保存下来
     if (softKeyboardHeight > 0) {
-      mSoftKeyboardSharedPreferences.edit()
-          .putInt(KEY_PREF_SOFT_KEYBOARD_HEIGHT, softKeyboardHeight)
-          .apply();
+      SharedPreferences sharedPreferences =
+          activity.getSharedPreferences(NAME_PREF_SOFT_KEYBOARD, Context.MODE_PRIVATE);
+      sharedPreferences.edit().putInt(KEY_PREF_SOFT_KEYBOARD_HEIGHT, softKeyboardHeight).apply();
     }
 
     // 如果当前“软键盘”高度等于零，可能是被隐藏了，也可能是我的锅，那就使用本地已经保存键盘高度
     if (softKeyboardHeight == 0) {
-      softKeyboardHeight = mSoftKeyboardSharedPreferences.getInt(KEY_PREF_SOFT_KEYBOARD_HEIGHT,
-          DensityUtil.dip2px(mActivity, DEFAULT_SOFT_KEYBOARD_HEIGHT));
+      SharedPreferences sharedPreferences =
+          activity.getSharedPreferences(NAME_PREF_SOFT_KEYBOARD, Context.MODE_PRIVATE);
+      softKeyboardHeight = sharedPreferences.getInt(KEY_PREF_SOFT_KEYBOARD_HEIGHT,
+          DensityUtil.dip2px(activity, DEFAULT_SOFT_KEYBOARD_HEIGHT));
     }
 
     return softKeyboardHeight;
   }
 
   // 软键盘是否显示
-  public boolean isSoftKeyboardShown() {
-    return getCurrentSoftInputHeight() != 0;
+  public static boolean isSoftKeyboardShown(Activity activity) {
+    return getCurrentSoftInputHeight(activity) != 0;
   }
 
   /**
@@ -65,10 +61,11 @@ public class SupportSoftKeyboardUtil {
    *
    * @return 虚拟按键的高度
    */
-  @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1) private int getNavigationBarHeight() {
+  @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1) private static int getNavigationBarHeight(
+      Context context) {
 
-    WindowManager windowManager =
-        (WindowManager) mActivity.getSystemService(Context.WINDOW_SERVICE);
+    WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+
     // 获取可用的高度
     DisplayMetrics defaultDisplayMetrics = new DisplayMetrics();
     windowManager.getDefaultDisplay().getMetrics(defaultDisplayMetrics);
@@ -87,19 +84,19 @@ public class SupportSoftKeyboardUtil {
    *
    * @return 软键盘的高度
    */
-  public int getCurrentSoftInputHeight() {
+  public static int getCurrentSoftInputHeight(Activity activity) {
 
     Rect rect = new Rect();
 
-    mActivity.getWindow().getDecorView().getWindowVisibleDisplayFrame(rect);
+    activity.getWindow().getDecorView().getWindowVisibleDisplayFrame(rect);
 
-    int screenHeight = mActivity.getWindow().getDecorView().getRootView().getHeight();
+    int screenHeight = activity.getWindow().getDecorView().getRootView().getHeight();
 
     int softInputHeight = screenHeight - rect.bottom;
 
     // Android LOLLIPOP 以上的版本才有"虚拟按键"
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-      softInputHeight -= getNavigationBarHeight();
+      softInputHeight -= getNavigationBarHeight(activity);
     }
 
     // excuse me?

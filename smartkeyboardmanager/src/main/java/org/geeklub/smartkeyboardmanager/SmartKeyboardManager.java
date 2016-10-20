@@ -36,8 +36,6 @@ public class SmartKeyboardManager {
 
   private InputMethodManager mInputMethodManager;
 
-  private SupportSoftKeyboardUtil mSupportSoftKeyboardUtil;
-
   private OnContentViewScrollListener mOnContentViewScrollListener;
 
   public SmartKeyboardManager(Builder builder) {
@@ -47,8 +45,7 @@ public class SmartKeyboardManager {
     mEditText = builder.mNestedEditText;
     mEmotionTrigger = builder.mNestedEmotionTrigger;
     mInputMethodManager = builder.mNestedInputMethodManager;
-    mSupportSoftKeyboardUtil = builder.mNestedSupportSoftKeyboardUtil;
-    mOnContentViewScrollListener = builder.mOnNestednContentViewScrollListener;
+    mOnContentViewScrollListener = builder.mOnNestedContentViewScrollListener;
     setUpCallbacks();
   }
 
@@ -88,7 +85,7 @@ public class SmartKeyboardManager {
         if (mEmotionKeyboard.isShown()) { // "颜文字键盘"显示
           hideEmotionKeyboardByLockContentViewHeight();
         } else { // "颜文字键盘"隐藏
-          if (mSupportSoftKeyboardUtil.isSoftKeyboardShown()) { // "软键盘"显示
+          if (SupportSoftKeyboardUtil.isSoftKeyboardShown(mActivity)) { // "软键盘"显示
             showEmotionKeyboardByLockContentViewHeight();
           } else { // "软键盘"隐藏
             showEmotionKeyboardWithoutLockContentViewHeight();
@@ -114,7 +111,7 @@ public class SmartKeyboardManager {
 
     mEmotionKeyboard.setVisibility(View.VISIBLE);
     mEmotionKeyboard.getLayoutParams().height =
-        mSupportSoftKeyboardUtil.getSupportSoftKeyboardHeight();
+        SupportSoftKeyboardUtil.getSupportSoftKeyboardHeight(mActivity);
 
     ObjectAnimator showAnimator = ObjectAnimator.ofFloat(mEmotionKeyboard, "alpha", 0.0F, 1.0F);
     showAnimator.setDuration(DURATION_SWITCH_EMOTION_KEYBOARD);
@@ -159,7 +156,7 @@ public class SmartKeyboardManager {
   private void showEmotionKeyboardWithoutLockContentViewHeight() {
     mEmotionKeyboard.setVisibility(View.VISIBLE);
     mEmotionKeyboard.getLayoutParams().height =
-        mSupportSoftKeyboardUtil.getSupportSoftKeyboardHeight();
+        SupportSoftKeyboardUtil.getSupportSoftKeyboardHeight(mActivity);
 
     ObjectAnimator showAnimator = ObjectAnimator.ofFloat(mEmotionKeyboard, "alpha", 0.0F, 1.0F);
     showAnimator.setDuration(DURATION_SWITCH_EMOTION_KEYBOARD);
@@ -233,9 +230,7 @@ public class SmartKeyboardManager {
 
     private InputMethodManager mNestedInputMethodManager;
 
-    private SupportSoftKeyboardUtil mNestedSupportSoftKeyboardUtil;
-
-    private OnContentViewScrollListener mOnNestednContentViewScrollListener;
+    private OnContentViewScrollListener mOnNestedContentViewScrollListener;
 
     public Builder(Activity activity) {
       this.mNestedActivity = activity;
@@ -262,7 +257,7 @@ public class SmartKeyboardManager {
     }
 
     public Builder addOnContentViewScrollListener(OnContentViewScrollListener listener) {
-      this.mOnNestednContentViewScrollListener = listener;
+      this.mOnNestedContentViewScrollListener = listener;
       return this;
     }
 
@@ -274,7 +269,6 @@ public class SmartKeyboardManager {
     private void initFieldsWithDefaultValue() {
       this.mNestedInputMethodManager =
           (InputMethodManager) mNestedActivity.getSystemService(Context.INPUT_METHOD_SERVICE);
-      this.mNestedSupportSoftKeyboardUtil = new SupportSoftKeyboardUtil(mNestedActivity);
       mNestedActivity.getWindow()
           .setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN
               | WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
